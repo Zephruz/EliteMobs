@@ -46,6 +46,8 @@ public class ArenasConfig {
     private static String joinSpectatorTitle;
     @Getter
     private static String joinSpectatorSubtitle;
+    @Getter
+    private static boolean enableItemDurabilityLoss;
 
     private ArenasConfig() {
     }
@@ -54,6 +56,7 @@ public class ArenasConfig {
         File file = ConfigurationEngine.fileCreator("Arenas.yml");
         FileConfiguration fileConfiguration = ConfigurationEngine.fileConfigurationCreator(file);
 
+        enableItemDurabilityLoss = ConfigurationEngine.setBoolean(fileConfiguration, "enableItemDurabilityLoss", true);
         notEnoughPlayersMessage = ConfigurationEngine.setString(file, fileConfiguration, "notEnoughPlayersMessage", "&8[EliteMobs] &cYou need at least $amount to start the match!", true);
         startingTitle = ConfigurationEngine.setString(file, fileConfiguration, "startingMessage", "&2Starting!", true);
         startingSubtitle = ConfigurationEngine.setString(file, fileConfiguration, "startingSubtitle", "&2in $count...", true);

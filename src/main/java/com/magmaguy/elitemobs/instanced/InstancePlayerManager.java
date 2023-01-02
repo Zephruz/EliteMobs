@@ -89,7 +89,11 @@ public class InstancePlayerManager {
 
     public static void playerDeath(MatchInstance matchInstance, Player player) {
         if (!matchInstance.players.contains(player)) return;
-        AlternativeDurabilityLoss.doDurabilityLoss(player);
+
+        if (ArenasConfig.isEnableItemDurabilityLoss()) {
+            AlternativeDurabilityLoss.doDurabilityLoss(player);
+        }
+
         player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
         matchInstance.players.remove(player);
         if (matchInstance.players.isEmpty()) {

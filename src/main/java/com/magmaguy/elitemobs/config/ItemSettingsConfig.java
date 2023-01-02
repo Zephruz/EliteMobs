@@ -121,6 +121,8 @@ public class ItemSettingsConfig {
     private static String weaponEntry;
     @Getter
     private static String armorEntry;
+    @Getter
+    private static Boolean doDropOnLastItemDamage;
 
     private ItemSettingsConfig() {
     }
@@ -129,6 +131,7 @@ public class ItemSettingsConfig {
         File file = ConfigurationEngine.fileCreator("ItemSettings.yml");
         FileConfiguration fileConfiguration = ConfigurationEngine.fileConfigurationCreator(file);
 
+        doDropOnLastItemDamage = ConfigurationEngine.setBoolean(fileConfiguration, "doDropOnLastItemDamage", true);
         doEliteMobsLoot = ConfigurationEngine.setBoolean(fileConfiguration, "doEliteMobsLoot", true);
         doMmorpgColors = ConfigurationEngine.setBoolean(fileConfiguration, "doMMORPGColorsForItems", true);
         preventCustomItemPlacement = ConfigurationEngine.setBoolean(fileConfiguration, "preventCustomItemPlacement", true);

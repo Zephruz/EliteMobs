@@ -56,10 +56,12 @@ public class AlternativeDurabilityLoss implements Listener {
         itemsList.add(player.getInventory().getItemInMainHand());
         itemsList.add(player.getInventory().getItemInOffHand());
 
-        for (ItemStack itemStack : itemsList)
-            if (itemStack != null &&
-                    itemStack.getType().getMaxDurability() != 0 &&
-                    EliteItemManager.isEliteMobsItem(itemStack) &&
+        for (ItemStack itemStack : itemsList) {
+            if (!EliteItemManager.isEliteMobsItem(itemStack)) {
+                continue;
+            }
+
+            if (itemStack.getType().getMaxDurability() != 0 &&
                     itemStack.getItemMeta() instanceof Damageable damageable) {
                 int maxDurability = itemStack.getType().getMaxDurability();
                 int durabilityLoss = (int) (maxDurability * durabilityLoss(itemStack));
@@ -67,13 +69,16 @@ public class AlternativeDurabilityLoss implements Listener {
                 int newDurability = currentDurability + durabilityLoss;
                 damageable.setDamage(newDurability);
                 itemStack.setItemMeta(damageable);
-                if (newDurability >= maxDurability)
+                if (newDurability >= maxDurability) {
                     if (ItemSettingsConfig.isPreventEliteItemsFromBreaking()) {
                         damageable.setDamage(maxDurability - 1);
                         itemStack.setItemMeta(damageable);
-                    } else
+                    } else {
                         itemStack.setAmount(0);
+                    }
+                }
             }
+        }
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -86,6 +91,8 @@ public class AlternativeDurabilityLoss implements Listener {
         if (!event.getEntity().getType().equals(EntityType.PLAYER)) return;
         //citizens spams this really hard for some reason
         if (event.getEntity().hasMetadata("NPC")) return;
+        if (!ItemSettingsConfig.getDoDropOnLastItemDamage()) return;
+
         Player player = (Player) event.getEntity();
         for (ItemStack itemStack : player.getInventory().getArmorContents())
             if (isOnLastDamage(itemStack)) {
@@ -100,12 +107,15 @@ public class AlternativeDurabilityLoss implements Listener {
         LivingEntity livingEntity = EntityFinder.filterRangedDamagers(event.getDamager());
         if (livingEntity == null) return;
         if (!livingEntity.getType().equals(EntityType.PLAYER)) return;
+
         Player player = (Player) livingEntity;
         ItemStack itemStack = player.getInventory().getItemInMainHand();
         if (isOnLastDamage(itemStack)) {
-            player.getWorld().dropItem(player.getLocation(), itemStack.clone());
-            itemStack.setAmount(0);
-            player.sendMessage(ChatColorConverter.convert(ItemSettingsConfig.getLowWeaponDurabilityItemDropMessage()));
+            if (ItemSettingsConfig.getDoDropOnLastItemDamage()) {
+                player.getWorld().dropItem(player.getLocation(), itemStack.clone());
+                itemStack.setAmount(0);
+                player.sendMessage(ChatColorConverter.convert(ItemSettingsConfig.getLowWeaponDurabilityItemDropMessage()));
+            }
             event.setCancelled(true);
         }
     }

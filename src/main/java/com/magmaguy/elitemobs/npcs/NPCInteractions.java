@@ -147,9 +147,6 @@ public class NPCInteractions implements Listener {
                 }
                 break;
             case ENHANCER:
-                event.getPlayer().sendMessage("[EliteMobs] This feature is coming back soon!");
-                break;
-                /*
                 if (event.getPlayer().hasPermission("elitemobs.enhancer.npc")) {
                     new BukkitRunnable() {
                         @Override
@@ -160,8 +157,10 @@ public class NPCInteractions implements Listener {
                     }.runTaskLater(MetadataHandler.PLUGIN, 1);
                 }
                 break;
-
-                 */
+                /*
+                event.getPlayer().sendMessage("[EliteMobs] This feature is coming back soon!");
+                break;
+                */
             case REFINER:
                 if (event.getPlayer().hasPermission("elitemobs.refiner.npc")) {
                     new BukkitRunnable() {

@@ -195,6 +195,18 @@ public class EnhancementMenu extends EliteMenu {
                 //confirm button
                 if (event.getSlot() == EnhancementMenuConfig.confirmSlot) {
                     if (EnhancementInventory.getItem(outputSlot) != null) {
+                        ItemStack inputOrbs = EnhancementInventory.getItem(EnhancementMenuConfig.eliteUpgradeOrbInputSlot);
+
+                        //add remaining orbs back into inventory
+                        if (inputOrbs != null) {
+                            int amt = inputOrbs.getAmount();
+
+                            if (amt > 1) {
+                                inputOrbs.setAmount(amt-1);
+                                playerInventory.addItem(inputOrbs);
+                            }
+                        }
+
                         EnhancementInventory.setItem(EnhancementMenuConfig.eliteItemInputSlot, null);
                         EnhancementInventory.setItem(EnhancementMenuConfig.eliteUpgradeOrbInputSlot, null);
                         playerInventory.addItem(EnhancementInventory.getItem(outputSlot));

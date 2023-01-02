@@ -193,11 +193,29 @@ public class RepairMenu extends EliteMenu {
 
                 //confirm button
                 if (event.getSlot() == RepairMenuConfig.confirmSlot) {
-                    if (repairInventory.getItem(outputSlot) != null) {
+                    ItemStack outputItem = repairInventory.getItem(outputSlot);
+                    if (outputItem != null) {
+                        ItemStack inputScrap = repairInventory.getItem(RepairMenuConfig.eliteScrapInputSlot);
+
+                        //add remaining scrap back into inventory
+                        if (inputScrap != null) {
+                            int amt = inputScrap.getAmount();
+
+                            if (amt > 1) {
+                                inputScrap.setAmount(amt-1);
+                                playerInventory.addItem(inputScrap);
+                            }
+                        }
+
+                        //remove scrap & elite item from input slots
                         repairInventory.setItem(RepairMenuConfig.eliteItemInputSlot, null);
                         repairInventory.setItem(RepairMenuConfig.eliteScrapInputSlot, null);
-                        playerInventory.addItem(repairInventory.getItem(outputSlot));
-                        repairInventory.remove(repairInventory.getItem(outputSlot));
+
+                        //add repaired elite item to player inventory
+                        playerInventory.addItem(outputItem);
+                        repairInventory.remove(outputItem);
+
+                        //remove output slot item
                         repairInventory.setItem(outputSlot, null);
                     }
                 }
