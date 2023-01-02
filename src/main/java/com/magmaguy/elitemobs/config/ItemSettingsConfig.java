@@ -122,7 +122,11 @@ public class ItemSettingsConfig {
     @Getter
     private static String armorEntry;
     @Getter
-    private static Boolean doDropOnLastItemDamage;
+    private static boolean doDropOnLastItemDamage;
+    @Getter
+    private static String lowArmorDurabilityMessage;
+    @Getter
+    private static String lowWeaponDurabilityMessage;
 
     private ItemSettingsConfig() {
     }
@@ -194,7 +198,9 @@ public class ItemSettingsConfig {
         lootLevelDifferenceLockout = ConfigurationEngine.setInt(fileConfiguration, "lootLevelDifferenceLockout", 10);
         preventEliteItemsFromBreaking = ConfigurationEngine.setBoolean(fileConfiguration, "preventEliteItemsFromBreaking", true);
         lowArmorDurabilityItemDropMessage = ConfigurationEngine.setString(file, fileConfiguration, "lowDurabilityItemDropMessage", "&8[EliteMobs] &cDropped armor due to low durability! &8Repair it at the NPC with scrap to use it!", true);
+        lowArmorDurabilityMessage = ConfigurationEngine.setString(file, fileConfiguration, "lowDurabilityItemMessage", "&8[EliteMobs] &cArmor is ineffective due to damage! &8Repair it at the NPC with scrap to use it!", true);
         lowWeaponDurabilityItemDropMessage = ConfigurationEngine.setString(file, fileConfiguration, "lowWeaponItemDropMessage", "&8[EliteMobs] &cDropped weapon due to low durability! &8Repair it at the NPC with scrap to use it!", true);
+        lowWeaponDurabilityMessage = ConfigurationEngine.setString(file, fileConfiguration, "lowWeaponDurabilityItemMessage", "&8[EliteMobs] &cWeapon is ineffective due to damage! &8Repair it at the NPC with scrap to use it!", true);
         minimumProcedurallyGeneratedDiamondLootLevelPlusSeven = ConfigurationEngine.setInt(fileConfiguration, "minimumProcedurallyGeneratedDiamondLootLevelPlusSeven", 10);
         simlootMessageSuccess = ConfigurationEngine.setString(file, fileConfiguration, "simlootMessageSuccess", "&8[EliteMobs] &2Rolled for loot and got $itemName &2!", true);
         simlootMessageFailure = ConfigurationEngine.setString(file, fileConfiguration, "simlootMessageFailure", "&8[EliteMobs] &cRolled for loot and got nothing!", true);

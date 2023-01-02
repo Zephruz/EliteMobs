@@ -91,14 +91,21 @@ public class AlternativeDurabilityLoss implements Listener {
         if (!event.getEntity().getType().equals(EntityType.PLAYER)) return;
         //citizens spams this really hard for some reason
         if (event.getEntity().hasMetadata("NPC")) return;
-        if (!ItemSettingsConfig.getDoDropOnLastItemDamage()) return;
+
+        boolean dropItems = ItemSettingsConfig.isDoDropOnLastItemDamage();
 
         Player player = (Player) event.getEntity();
         for (ItemStack itemStack : player.getInventory().getArmorContents())
             if (isOnLastDamage(itemStack)) {
-                player.getWorld().dropItem(player.getLocation(), itemStack.clone());
-                itemStack.setAmount(0);
-                player.sendMessage(ChatColorConverter.convert(ItemSettingsConfig.getLowArmorDurabilityItemDropMessage()));
+                if (dropItems) {
+                    player.getWorld().dropItem(player.getLocation(), itemStack.clone());
+                    itemStack.setAmount(0);
+                    player.sendMessage(ChatColorConverter.convert(ItemSettingsConfig.getLowArmorDurabilityItemDropMessage()));
+                }
+                else
+                {
+                    player.sendMessage(ChatColorConverter.convert(ItemSettingsConfig.getLowArmorDurabilityMessage()));
+                }
             }
     }
 
@@ -111,10 +118,14 @@ public class AlternativeDurabilityLoss implements Listener {
         Player player = (Player) livingEntity;
         ItemStack itemStack = player.getInventory().getItemInMainHand();
         if (isOnLastDamage(itemStack)) {
-            if (ItemSettingsConfig.getDoDropOnLastItemDamage()) {
+            if (ItemSettingsConfig.isDoDropOnLastItemDamage()) {
                 player.getWorld().dropItem(player.getLocation(), itemStack.clone());
                 itemStack.setAmount(0);
                 player.sendMessage(ChatColorConverter.convert(ItemSettingsConfig.getLowWeaponDurabilityItemDropMessage()));
+            }
+            else
+            {
+                player.sendMessage(ChatColorConverter.convert(ItemSettingsConfig.getLowWeaponDurabilityMessage()));
             }
             event.setCancelled(true);
         }
